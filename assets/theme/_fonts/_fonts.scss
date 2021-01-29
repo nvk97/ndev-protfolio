@@ -1,0 +1,4 @@
+@import "../_mixins/font-face";
+@include font('Gilroy',normal,300,'~static/fonts/Gilroy-Light.woff');
+@include font('Gilroy',normal,bold,'~static/fonts/Gilroy-Bold.woff');
+@include font('Gilroy',normal,500,'~static/fonts/Gilroy-Medium.woff');

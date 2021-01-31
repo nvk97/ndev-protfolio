@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink to="/" :class="[$style.logo,{[$style.light]:light}]">
+    <NuxtLink to="/" :class="[$style.logo,{[$style.light]:light},{[$style.pending]:pending}]">
         <svg
           width="50"
           height="50"
@@ -24,8 +24,23 @@
 </template>
 
 <script>
+import gsap from 'gsap'
 export default {
-    props:['light']
+    props:['light'],
+    data(){
+    return{
+      pending:true
+    }
+  },
+    methods:{
+      fadeIn(){
+        gsap.from(`.${this.$style.logo}`,{x:-100,opacity:0,duration:0.6,ease:'easeInCubic'})
+      }
+    },
+    mounted(){
+      this.pending = false
+      this.fadeIn()
+    }
 }
 </script>
 
@@ -36,5 +51,26 @@ export default {
                 fill:$font-color-l
             }
         }
+        &.pending{
+          display: none;
+        }
+  @include sm-tablets{
+    svg{
+      width:50px;
+      height:50px;
+    }
+  }
+  @include sm-mobile{
+    svg{
+      width:30px;
+      height:30px;
+    }
+  }
+  @include esm-mobile{
+    svg{
+      width:30px;
+      height:30px;
+    }
+  }
     }
 </style>

@@ -28,5 +28,14 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  @include sm-tablets{
+    width: 100%;
+  }
+  @include sm-mobile{
+   width: 100%;
+  }
+  @include esm-mobile{
+    width: 100%;
+  }
 }
 </style>

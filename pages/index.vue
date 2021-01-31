@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-touch:swipe.top="swipeUp"  v-touch:swipe.down="swipeDown">
     <vMain :activeId="activeId" />
     <vNav :activeId="activeId" />
   </div>
@@ -10,7 +10,6 @@ import vMain from "@/components/v-main/v-main";
 export default {
   data() {
     let currentId = this.$nuxt.$route.hash;
-
     switch (currentId) {
       case "#hellow":
         currentId = 1;
@@ -40,6 +39,7 @@ export default {
         },
       ],
       disableScroll: false,
+      disableRedirect: false,
     };
   },
   components: {
@@ -48,27 +48,52 @@ export default {
   },
   methods: {
     changeSlide(to) {
-      this.activeId = to
+      
+      this.activeId = to;
+      this.$router.push(this.links[to - 1].to);
     },
     handleScroll(e) {
       if (!this.disableScroll) {
         this.disableScroll = true;
         setTimeout(() => (this.disableScroll = false), 1500);
-        if(e.deltaY>0 & !(this.activeId==3)){
-          this.changeSlide(++this.activeId)
-        }else{
-          if(e.deltaY<0 & !(this.activeId==1)){
-          this.changeSlide(--this.activeId)
-        }
+        if ((e.deltaY > 0) & !(this.activeId == 3)) {
+          let to = this.activeId;
+          this.changeSlide(++to);
+        } else {
+          if ((e.deltaY < 0) & !(this.activeId == 1)) {
+            let to = this.activeId;
+            this.changeSlide(--to);
+          }
         }
       }
     },
+    swipeDown(){
+      if (this.activeId != 1 && !this.disableRedirect){
+        this.disableRedirect = true
+        setTimeout(()=>this.disableRedirect=false,1500)
+        let to = this.activeId
+        to-=1
+        this.changeSlide(to)
+      }
+    },
+    swipeUp(){
+      if (this.activeId != 3 && !this.disableRedirect){
+        this.disableRedirect = true
+        setTimeout(()=>this.disableRedirect=false,1500)
+        let to = this.activeId
+        to+=1
+        this.changeSlide(to)
+      }
+    }
   },
   created() {
     this.$nuxt.$on("redirect", (id, to) => {
-      this.changeSlide(this.activeId, id);
-      this.activeId = id;
-      this.$nuxt.$router.push(to);
+      if (!this.disableRedirect) {
+        this.disableRedirect = true;
+        setTimeout(() => (this.disableRedirect = false), 1500);
+        this.changeSlide(id);
+        this.$nuxt.$router.push(to);
+      }
     });
   },
   mounted() {

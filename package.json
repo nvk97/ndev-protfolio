@@ -11,8 +11,11 @@
     "dependencies": {
         "@nuxtjs/axios": "^5.12.5",
         "@nuxtjs/svg-sprite": "^0.5.2",
+        "animejs": "^3.2.1",
         "core-js": "^3.8.2",
-        "nuxt": "^2.14.12"
+        "gsap": "^3.6.0",
+        "nuxt": "^2.14.12",
+        "vue2-touch-events": "^3.1.1"
     },
     "devDependencies": {
         "@nuxtjs/style-resources": "^1.0.0",

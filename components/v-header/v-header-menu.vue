@@ -1,5 +1,5 @@
 <template>
-  <div :class="[$style.menuBtn, { [$style.light]: light }]">
+  <div :class="[$style.menuBtn, { [$style.light]: light },{[$style.pending]:pending}]">
     <svg
       width="24"
       height="9"
@@ -13,8 +13,28 @@
   </div>
 </template>
 <script>
+import gsap from "gsap";
 export default {
   props: ["light"],
+  data() {
+    return {
+      pending: true,
+    };
+  },
+  methods: {
+    fadeIn() {
+      gsap.from(`.${this.$style.menuBtn}`, {
+        x: 100,
+        opacity: 0,
+        duration: 0.6,
+        ease: "easeInCubic",
+      });
+    },
+  },
+  mounted() {
+    this.pending=false
+    this.fadeIn();
+  },
 };
 </script>
 
@@ -22,8 +42,11 @@ export default {
 .menuBtn {
   &.light {
     rect {
-            fill:$font-color-l
+      fill: $font-color-l;
     }
+  }
+  &.pending{
+    display: none;
   }
 }
 </style>

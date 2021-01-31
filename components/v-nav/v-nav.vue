@@ -1,5 +1,5 @@
 <template>
-  <nav class="nav">
+  <nav class="nav" :class="{pending:pending}">
     <vNavLink
       v-for="link in links"
       :key="link.to"
@@ -13,6 +13,7 @@
 
 <script>
 import vNavLink from "@/components/v-nav/v-nav-link";
+import gsap from 'gsap'
 export default {
   props:['activeId'],
   data() {
@@ -35,19 +36,28 @@ export default {
         },
       ],
       light: false,
+      pending:true
     };
   },
   components: {
     vNavLink,
   },
+  methods:{
+    fadeIn(){
+      gsap.from('.nav',{x:100,opacity:0,duration:0.6,ease:'easeInOutCubic'})
+    }
+  },
   created() {
     this.$nuxt.$on("toggle-mode", () => {
       this.light = this.light ? false : true;
     });
-    
+  },
+  mounted(){
+    this.pending = false
+    this.fadeIn()
   },
   beforeDestroy() {
-    this.$nuxt.$on("toggle-mode");
+    this.$nuxt.$off("toggle-mode");
   },
 };
 </script>
@@ -56,5 +66,17 @@ export default {
 .nav {
   margin-top: -12vh;
   width: 24px;
+  &.pending{
+    display: none;
+  }
+  @include sm-tablets{
+    display: none;
+  }
+  @include sm-mobile{
+    display: none;
+  }
+  @include esm-mobile{
+    display: none;
+  }
 }
 </style>

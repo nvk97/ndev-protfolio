@@ -1,5 +1,5 @@
 <template>
-  <div class="toggle-mode">
+  <div class="toggle-mode" :class='{pending:pending}'>
     <svg-icon
       name="todarkmode"
       width="24px"
@@ -18,9 +18,29 @@
 </template>
 
 <script>
+import gsap from 'gsap'
 export default {
-  props:['light']
-}
+  props: ["light"],
+  data(){
+    return{
+      pending:true
+    }
+  },
+  methods: {
+    fadeIn() {
+      gsap.from(`.toggle-mode`, {
+        y: -100,
+        opacity: 0,
+        duration: 0.6,
+        ease: "easeInCubic",
+      });
+    },
+  },
+  mounted() {
+    this.pending = false
+    this.fadeIn();
+  },
+};
 </script>
 
 
@@ -30,5 +50,17 @@ export default {
   width: 24px;
   height: 24px;
   margin-right: 60px;
+  &.pending{
+    display: none;
+  }
+  @include sm-tablets{
+    margin-right: 30px;
+  }
+  @include sm-mobile{
+    margin-right: 30px;
+  }
+  @include esm-mobile{
+     margin-right: 20px;
+  }
 }
 </style>
